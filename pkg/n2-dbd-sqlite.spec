@@ -3,7 +3,7 @@ Version: %(echo $VERSION)
 # Release is passed through to our script. We concatenate on the dist flag.
 # Dist is a magic variable that will populate our version. I.E. EL8.
 Release: %(echo $RELEASE)%{?dist}
-Summary: Perl DBD SQLLite library files for integration with SQLLite databases.
+Summary: Perl DBD SQLite library files for integration with SQLite databases.
 Group: Development/Languages/Perl
 License: Perl
 URL: https://github.com/nsquarednz/n2-cgi-session
@@ -17,7 +17,7 @@ BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Requires: perl(DBI)
 
 %description
-N-Squared Software fork of 1.76.0 of the Perl DBD SQLLite module.
+N-Squared Software fork of 1.76.0 of the Perl DBD SQLite module.
 
 %post
 
@@ -85,7 +85,7 @@ rm -rf %{buildroot}
 /usr/local/lib64/perl5/*/DBD/SQLite/Cookbook.pod
 %endif
 
-# Bundle the DBD SQLLite man pages.
+# Bundle the DBD SQLite man pages.
 /usr/local/share/man/man3/DBD::SQLite.3pm
 /usr/local/share/man/man3/DBD::SQLite::Cookbook.3pm
 /usr/local/share/man/man3/DBD::SQLite::VirtualTable::PerlData.3pm

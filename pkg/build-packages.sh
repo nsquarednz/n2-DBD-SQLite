@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Script to create an RPM package from the N2 DBD SQLLite 1.76 source files.
+# Script to create an RPM package from the N2 DBD SQLite 1.76 source files.
 VERSION=$1
 RELEASE=$2
 
@@ -23,10 +23,10 @@ if [[ ! $VERSION =~ ^[0-9]+\.[0-9]+(\.[0-9]+)?$ ]] || [[ ! $RELEASE =~ ^[0-9]+$ 
 fi
 
 # Define our base package name. From there we will add some versoning information as required.
-N2DBD_SQLLITE_PACKAGE="n2-dbd-sqllite"
+N2DBD_SQLITE_PACKAGE="n2-dbd-sqlite"
 DATE=`date -R`
 YEAR=`date '+%Y'`
-TAR_N2DBD_SQLLITE_PACKAGE=${N2DBD_SQLLITE_PACKAGE}_$VERSION.orig.tar.gz
+TAR_N2DBD_SQLITE_PACKAGE=${N2DBD_SQLITE_PACKAGE}_$VERSION.orig.tar.gz
 
 OUR_DIR=`pwd`
 BASEPATH=`dirname "$OUR_DIR"`
@@ -46,26 +46,26 @@ rm -rf $DEPLOY_DIR
 mkdir $DEPLOY_DIR
 
 # Firstly the base service package.
-echo "# Building base package directory to $DEPLOY_DIR/$N2DBD_SQLLITE_PACKAGE"
+echo "# Building base package directory to $DEPLOY_DIR/$N2DBD_SQLITE_PACKAGE"
 cd "$OUR_DIR"
-mkdir $DEPLOY_DIR/$N2DBD_SQLLITE_PACKAGE
+mkdir $DEPLOY_DIR/$N2DBD_SQLITE_PACKAGE
 
-# Build the source files for the DBD SQLLite module.
-echo "# Compiling: N2 DBD SQLLite Module"
+# Build the source files for the DBD SQLite module.
+echo "# Compiling: N2 DBD SQLite Module"
 cd "$OUR_DIR/$SRC_DIR/"
 perl Makefile.PL
 
 # Perform the make task to generate the built files storing them in a structure that can be
 # bundled in our Deb and RPM files.
 make
-make DESTDIR=$OUR_DIR/$DEPLOY_DIR/$N2DBD_SQLLITE_PACKAGE/ install
+make DESTDIR=$OUR_DIR/$DEPLOY_DIR/$N2DBD_SQLITE_PACKAGE/ install
 
 # Whether we build an RPM or a Debian package depends on which build container we are running in.
 # Determine the OS release.
 if [ -f "/etc/debian_version" ]; then
     # Remove the pod file.
     cd "$OUR_DIR";
-    rm $DEPLOY_DIR/$N2DBD_SQLLITE_PACKAGE/usr/local/lib/x86_64-linux-gnu/perl/*/perllocal.pod
+    rm $DEPLOY_DIR/$N2DBD_SQLITE_PACKAGE/usr/local/lib/x86_64-linux-gnu/perl/*/perllocal.pod
 
     # Create debian packaging.
     echo "# Building Debian package"
@@ -80,27 +80,27 @@ if [ -f "/etc/debian_version" ]; then
     #
     # (But has been customized since then)
     #
-    echo "Building debian package in $N2DBD_SQLLITE_PACKAGE-$VERSION/debian"
-    mkdir -p $N2DBD_SQLLITE_PACKAGE-$VERSION/debian
-    find template-n2-dbd-sqllite -maxdepth 1 -type f -exec cp {} $N2DBD_SQLLITE_PACKAGE-$VERSION/debian/ \;
+    echo "Building debian package in $N2DBD_SQLITE_PACKAGE-$VERSION/debian"
+    mkdir -p $N2DBD_SQLITE_PACKAGE-$VERSION/debian
+    find template-n2-dbd-sqlite -maxdepth 1 -type f -exec cp {} $N2DBD_SQLITE_PACKAGE-$VERSION/debian/ \;
 
     # MODIFY TEMPLATE DEFAULTS
-    perl -pi -e "s/VERSION/$VERSION/g" $N2DBD_SQLLITE_PACKAGE-$VERSION/debian/changelog
-    perl -pi -e "s/RELEASE/$RELEASE/g" $N2DBD_SQLLITE_PACKAGE-$VERSION/debian/changelog
-    perl -pi -e "s/DATE/$DATE/g" $N2DBD_SQLLITE_PACKAGE-$VERSION/debian/changelog
-    perl -pi -e "s/PACKAGE/$N2DBD_SQLLITE_PACKAGE/g" $N2DBD_SQLLITE_PACKAGE-$VERSION/debian/changelog
-    perl -pi -e "s/PACKAGE/$N2DBD_SQLLITE_PACKAGE/g" $N2DBD_SQLLITE_PACKAGE-$VERSION/debian/control
-    perl -pi -e "s/DATE/$DATE/g" $N2DBD_SQLLITE_PACKAGE-$VERSION/debian/copyright
-    perl -pi -e "s/YEAR/$YEAR/g" $N2DBD_SQLLITE_PACKAGE-$VERSION/debian/copyright
-    perl -pi -e "s/PACKAGE/$N2DBD_SQLLITE_PACKAGE/g" $N2DBD_SQLLITE_PACKAGE-$VERSION/debian/$N2DBD_SQLLITE_PACKAGE.install
-    perl -pi -e "s/PACKAGE/$N2DBD_SQLLITE_PACKAGE/g" $N2DBD_SQLLITE_PACKAGE-$VERSION/debian/postinst
+    perl -pi -e "s/VERSION/$VERSION/g" $N2DBD_SQLITE_PACKAGE-$VERSION/debian/changelog
+    perl -pi -e "s/RELEASE/$RELEASE/g" $N2DBD_SQLITE_PACKAGE-$VERSION/debian/changelog
+    perl -pi -e "s/DATE/$DATE/g" $N2DBD_SQLITE_PACKAGE-$VERSION/debian/changelog
+    perl -pi -e "s/PACKAGE/$N2DBD_SQLITE_PACKAGE/g" $N2DBD_SQLITE_PACKAGE-$VERSION/debian/changelog
+    perl -pi -e "s/PACKAGE/$N2DBD_SQLITE_PACKAGE/g" $N2DBD_SQLITE_PACKAGE-$VERSION/debian/control
+    perl -pi -e "s/DATE/$DATE/g" $N2DBD_SQLITE_PACKAGE-$VERSION/debian/copyright
+    perl -pi -e "s/YEAR/$YEAR/g" $N2DBD_SQLITE_PACKAGE-$VERSION/debian/copyright
+    perl -pi -e "s/PACKAGE/$N2DBD_SQLITE_PACKAGE/g" $N2DBD_SQLITE_PACKAGE-$VERSION/debian/$N2DBD_SQLITE_PACKAGE.install
+    perl -pi -e "s/PACKAGE/$N2DBD_SQLITE_PACKAGE/g" $N2DBD_SQLITE_PACKAGE-$VERSION/debian/postinst
 
     # BUILD THE SOURCE TARBALLs that debian needs to build its packages.
-    TAR_N2DBD_SQLLITE_PACKAGE=${N2DBD_SQLLITE_PACKAGE}_$DEBIAN_VERSION_$VERSION.orig.tar.gz
+    TAR_N2DBD_SQLITE_PACKAGE=${N2DBD_SQLITE_PACKAGE}_$DEBIAN_VERSION_$VERSION.orig.tar.gz
 
-    tar zcf $TAR_N2DBD_SQLLITE_PACKAGE $DEPLOY_DIR/$N2DBD_SQLLITE_PACKAGE \
-        --transform "s#deploy/$N2DBD_SQLLITE_PACKAGE#$N2DBD_SQLLITE_PACKAGE-$VERSION#"
-    tar -xzf $TAR_N2DBD_SQLLITE_PACKAGE
+    tar zcf $TAR_N2DBD_SQLITE_PACKAGE $DEPLOY_DIR/$N2DBD_SQLITE_PACKAGE \
+        --transform "s#deploy/$N2DBD_SQLITE_PACKAGE#$N2DBD_SQLITE_PACKAGE-$VERSION#"
+    tar -xzf $TAR_N2DBD_SQLITE_PACKAGE
 
     # PERFORM THE PACKAGE BUILD
     #
@@ -108,7 +108,7 @@ if [ -f "/etc/debian_version" ]; then
     # See: http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=566837
     # (Fixed in dpkg version 1.15.6)
     #
-    cd $N2DBD_SQLLITE_PACKAGE-$VERSION
+    cd $N2DBD_SQLITE_PACKAGE-$VERSION
     debuild --no-lintian -uc -us
     cd "$OUR_DIR"
 
@@ -120,15 +120,15 @@ if [ -f "/etc/redhat-release" ]; then
 
     # Remove the pod file.
     cd "$OUR_DIR";
-    rm $DEPLOY_DIR/$N2DBD_SQLLITE_PACKAGE/usr/lib64/perl5/perllocal.pod
+    rm $DEPLOY_DIR/$N2DBD_SQLITE_PACKAGE/usr/lib64/perl5/perllocal.pod
 
     VERSION=$VERSION \
     RELEASE=$RELEASE \
-    PACKAGE=$N2DBD_SQLLITE_PACKAGE \
+    PACKAGE=$N2DBD_SQLITE_PACKAGE \
         rpmbuild -v \
-        --define "_builddir $OUR_DIR/$DEPLOY_DIR/$N2DBD_SQLLITE_PACKAGE" \
+        --define "_builddir $OUR_DIR/$DEPLOY_DIR/$N2DBD_SQLITE_PACKAGE" \
         --define "_rpmdir %(pwd)/rpms" \
         --define "_srcrpmdir %(pwd)/rpms" \
         --define "_sourcedir %(pwd)/../" \
-        -ba n2-dbd-sqllite.spec
+        -ba n2-dbd-sqlite.spec
 fi

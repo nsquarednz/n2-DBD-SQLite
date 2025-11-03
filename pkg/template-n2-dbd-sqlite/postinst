@@ -1,5 +1,5 @@
 #!/bin/sh
-# postinst script for N2 DBD SQLLite.
+# postinst script for N2 DBD SQLite.
 #
 # see: dh_installdeb(1)
 #
@@ -21,7 +21,7 @@ set -e
 case "$1" in
     configure)
 
-        echo "N2 DBD SQLLite installation complete. No additional configuration required."
+        echo "N2 DBD SQLite installation complete. No additional configuration required."
 
     ;;
 

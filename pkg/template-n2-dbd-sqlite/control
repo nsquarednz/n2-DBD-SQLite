@@ -9,4 +9,4 @@ Homepage: http://www.nsquared.nz/
 Package: PACKAGE
 Architecture: amd64
 Depends: ${misc:Depends}, libdbi-perl
-Description: N-Squared Software fork of 1.76.0 of the Perl DBD SQLLite module.
+Description: N-Squared Software fork of 1.76.0 of the Perl DBD SQLite module.

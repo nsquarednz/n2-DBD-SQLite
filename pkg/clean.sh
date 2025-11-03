@@ -13,7 +13,7 @@ function cleanup_deb {
     rm -f $base\_*.buildinfo
     rm -f $base\_*.changes
 }
-cleanup_deb n2-dbd-sqllite
+cleanup_deb n2-dbd-sqlite
 
 if [ -d ../deploy ]; then
     rm -rf ../deploy
